@@ -122,7 +122,36 @@ const CalendarModel = {
   // const events = parseICal(icalString);
   
   // // Print the parsed events
-  // console.log(events);
+
+  const uploadICalFile = async (file) => {
+     
+    // Create FormData object
+    const formData = new FormData();
+
+    // Add the iCal file to the FormData array
+    formData.append("file", file); // Note the "files[]" name, make sure your API expects this
+
+    // Send the FormData to the API
+    try {
+      const response = await fetch('http://localhost:3000/upload', {
+        method: "POST",
+        body: formData,
+      });
+
+      // Check if the request was successful
+      if (response.ok) {
+        console.log("iCal file uploaded successfully!");
+        // You can handle the API response here (e.g., display a success message)
+      } else {
+        console.error("Failed to upload iCal file.");
+        // You can handle the API error here (e.g., display an error message)
+      }
+    } catch (error) {
+      console.error("Error uploading iCal file:", error);
+      // Handle any potential errors during the upload process
+    }
+
+  }
 
 class App extends React.Component {
   constructor(props){
@@ -138,9 +167,11 @@ class App extends React.Component {
 		const file = evt.target.files[0];
 		const reader = new FileReader();
 
-		reader.onload = (evt) => {
+		reader.onload = async (evt) => {
 			const results = parseICal(evt.target.result);
       // console.log(results);
+      // Upload data to API
+      const fileUpload =  await uploadICalFile(file);
 			this.setState({
 				events : results,
 			})
@@ -149,6 +180,9 @@ class App extends React.Component {
 
 	}
 
+     // console.log(events);
+
+
   render(){
     return (
       <div className="App">
@@ -156,7 +190,8 @@ class App extends React.Component {
         <form>
 						<input 
 							type="file"
-							onChange={this.handleFileUpload} 
+							onChange={this.handleFileUpload}
+              name="file" 
 						/>
 						<button type="button">Import Calendar</button>
 					</form> 
