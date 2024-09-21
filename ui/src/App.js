@@ -2,7 +2,7 @@ import React from 'react';
 import './styles/styles.scss';
 
 import parseICal from './lib/parseICal';
-
+import CalendarComponent from './components/Calendar';
 const DaysOfTheWeek = [{
   id : 1,
   fullName : "Monday",
@@ -195,12 +195,7 @@ class App extends React.Component {
 						/>
 						<button type="button">Import Calendar</button>
 					</form> 
-        <div className="Calendar">
-          <h3>Month</h3>
-          <ol className='CalendarDays'>
-            <li className='CalendarDay'></li>
-          </ol>
-        </div>
+          <CalendarComponent />
       </div>
     );
   }
