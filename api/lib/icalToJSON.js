@@ -12,11 +12,11 @@ async function icalToJSON(uploadedFile) {
     for (const component in calendar) {
       if (calendar[component].type === 'VEVENT') {
         const event = {
-          Summary: calendar[component].summary,
-          Start: calendar[component].start.toISOString(),
-          End: calendar[component].end.toISOString(),
-          Location: calendar[component].location,
-          Description: calendar[component].description,
+          title: calendar[component].summary,
+          start: calendar[component].start.toISOString(),
+          end: calendar[component].end.toISOString(),
+          location: calendar[component].location,
+          description: calendar[component].description,
         };
         events.push(event);
       }

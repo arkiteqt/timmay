@@ -3,6 +3,9 @@ import './styles/styles.scss';
 
 import parseICal from './lib/parseICal';
 import CalendarComponent from './components/Calendar';
+
+import getEvents from "./services/getEvents";
+
 const DaysOfTheWeek = [{
   id : 1,
   fullName : "Monday",
@@ -141,6 +144,8 @@ const CalendarModel = {
       // Check if the request was successful
       if (response.ok) {
         console.log("iCal file uploaded successfully!");
+        return response.json();
+
         // You can handle the API response here (e.g., display a success message)
       } else {
         console.error("Failed to upload iCal file.");
@@ -166,19 +171,28 @@ class App extends React.Component {
   handleFileUpload = (evt) => {
 		const file = evt.target.files[0];
 		const reader = new FileReader();
-
 		reader.onload = async (evt) => {
-			const results = parseICal(evt.target.result);
+			// const data = parseICal(evt.target.result);
       // console.log(results);
       // Upload data to API
-      const fileUpload =  await uploadICalFile(file);
+      const events =  await uploadICalFile(file);
+      console.log("handled file upload",events);
+
 			this.setState({
-				events : results,
+				events : events,
 			})
 		}
 		reader.readAsText(file);
+   
 
 	}
+
+  handleOnClick = (evt) => {
+    console.log("button clicked", evt);
+    this.setState({
+      events : getEvents()
+    })
+  }
 
      // console.log(events);
 
@@ -195,7 +209,10 @@ class App extends React.Component {
 						/>
 						<button type="button">Import Calendar</button>
 					</form> 
-          <CalendarComponent />
+          <button type="button" onClick={this.handleOnClick}>Load Events</button>
+          <CalendarComponent 
+            events={this.state.events} 
+          />
       </div>
     );
   }

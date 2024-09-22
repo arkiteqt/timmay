@@ -12,31 +12,6 @@ const getDaysInMonth = (month, year) => {
   return days;
 };
 
-// Sample event data with start and end times
-const events = [
-  {
-    id: 1,
-    title: "Multi-day Conference",
-    start: new Date(2024, 8, 20, 10, 0), // Sept 20, 2024, 10:00 AM
-    end: new Date(2024, 8, 22, 17, 0),   // Sept 22, 2024, 5:00 PM
-    description: "A multi-day conference covering various topics.",
-  },
-  {
-    id: 2,
-    title: "Meeting with Client",
-    start: new Date(2024, 8, 21, 13, 30), // Sept 21, 2024, 1:30 PM
-    end: new Date(2024, 8, 21, 14, 30),   // Sept 21, 2024, 2:30 PM
-    description: "Project discussion with client.",
-  },
-  {
-    id: 3,
-    title: "Workshop",
-    start: new Date(2024, 8, 22, 9, 0),  // Sept 22, 2024, 9:00 AM
-    end: new Date(2024, 8, 22, 12, 0),   // Sept 22, 2024, 12:00 PM
-    description: "Technical workshop on React.",
-  },
-];
-
 // Side Drawer Component
 const SideDrawer = ({ event, onClose }) => {
   if (!event) return null;
@@ -52,7 +27,7 @@ const SideDrawer = ({ event, onClose }) => {
 };
 
 // Main Calendar Component
-const CalendarComponent = () => {
+const CalendarComponent = ({events}) => {
   const [view, setView] = useState("month"); // month, week, or day
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -102,10 +77,10 @@ const CalendarComponent = () => {
                   className="calendar-event"
                   onClick={() => handleEventClick(event)}
                 >
-                  {day.toDateString() === event.start.toDateString() ? (
+                  {day.toDateString() === new Date(event.start) ? (
                     <>
                       <strong>{event.title}</strong>
-                      <div>{`${event.start.getHours()}:${event.start.getMinutes()} - ${event.end.getHours()}:${event.end.getMinutes()}`}</div>
+                      <div>{`${new Date(event.start).getHours()}:${new Date(event.start).getMinutes()} - ${new Date(event.end).getHours()}:${new Date(event.end).getMinutes()}`}</div>
                     </>
                   ) : (
                     <div>{event.title}</div>
